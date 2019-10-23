@@ -5,13 +5,17 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private float jumpSpeed=75;
+    [SerializeField] private float jumpSpeed = 75;
     [SerializeField] private float speed = 20;
-    private Rigidbody rigidbody;
     private float dstToGnd;  // Distance to the road
-    private SkateMoves skateMove;
     private bool balance;
+    private bool onRail;
+
+    [SerializeField] private LayerMask layerMask;
+    private Rigidbody rigidbody;
+    private SkateMoves skateMove;
     private Vector3 EulerAngleVelocity;
+    private int rot;
 
     private enum SkateMoves
     {
@@ -27,51 +31,54 @@ public class Player : MonoBehaviour
     {
         dstToGnd = GetComponent<BoxCollider>().bounds.extents.y;
         rigidbody = FindObjectOfType<Rigidbody>();
-
-        //rigidbody.constraints = RigidbodyConstraints.FreezePositionX;
-    }
-
-    private void FixedUpdate()
-    {
-        if (balance)
-            balanceGame();
-
-        if (onGround())
-        {
-            
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, speed);
-            //transform.position += transform.forward * Time.deltaTime*speed;
-            balance = false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && onGround())
-        {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
-        }
     }
 
     private void Update()
     {
 
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, Vector3.forward, out hit, 1f) && !onGround())
+        //if (onGround())
         {
-            
-            if (skateMove == SkateMoves.red && hit.collider.CompareTag("RedWall"))
-                Destroy(hit.collider.gameObject);
-            else if (skateMove == SkateMoves.green && hit.collider.CompareTag("GreenWall"))
-                Destroy(hit.collider.gameObject);
-            else if (skateMove == SkateMoves.yellow && hit.collider.CompareTag("YellowWall"))
-                Destroy(hit.collider.gameObject);
+            rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, speed);
+            balance = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.Space) && onGround())
+            jump();
+
+        if (onRail)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+                rot = 1;
+
+            else if (Input.GetKeyDown(KeyCode.RightArrow))
+                rot = -1;
+
+            transform.eulerAngles = new Vector3(0, 0, 60) * rot;
+
+        }
+
+
+        checkForward();
+        moveChange();
+
+    }
+
+    private void rotate(int rot)
+    {
+
+
+        //Quaternion deltaRotaiton = Quaternion.Euler(new Vector3(0,0,60)*rot * Time.deltaTime* 50);
+        //rigidbody.MoveRotation(rigidbody.rotation * deltaRotaiton);
+    }
+
+    private void moveChange()
+    {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
             skateMove = SkateMoves.red;
         else if (Input.GetKeyDown(KeyCode.UpArrow))
             skateMove = SkateMoves.green;
         else if (Input.GetKeyDown(KeyCode.RightArrow))
             skateMove = SkateMoves.yellow;
-            
 
         switch (skateMove)
         {
@@ -89,28 +96,46 @@ public class Player : MonoBehaviour
                 break;
 
         }
-
     }
 
-    private void randomRotation()
+    private void checkForward()
     {
-        float randomSlide = UnityEngine.Random.Range(0, 1);
-        if (randomSlide <= 0.5f)
-            randomSlide = -45;
-        else
-            randomSlide = 45;
-        EulerAngleVelocity = new Vector3(0, 0, randomSlide);
-        balance = true;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f) && !onGround())
+        {
+
+            if (skateMove == SkateMoves.red && hit.collider.CompareTag("RedWall"))
+                Destroy(hit.collider.gameObject);
+            else if (skateMove == SkateMoves.green && hit.collider.CompareTag("GreenWall"))
+                Destroy(hit.collider.gameObject);
+            else if (skateMove == SkateMoves.yellow && hit.collider.CompareTag("YellowWall"))
+                Destroy(hit.collider.gameObject);
+        }
     }
 
-    private void balanceGame()
+    private void jump()
     {
-        transform.eulerAngles = Vector3.back * Time.deltaTime * EulerAngleVelocity.z*5;
-        //rigidbody.angularVelocity += EulerAngleVelocity * Time.deltaTime * 50;
-        //Quaternion deltaRotaiton = Quaternion.Euler(EulerAngleVelocity * Time.deltaTime);
-        //rigidbody.MoveRotation(rigidbody.rotation * deltaRotaiton);
-        
+        rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
     }
+
+    //private void randomRotation()
+    //   {
+    //       float randomSlide = UnityEngine.Random.Range(0, 1);
+    //       if (randomSlide <= 0.5f)
+    //           randomSlide = -45;
+    //       else
+    //           randomSlide = 45;
+    //       EulerAngleVelocity = new Vector3(0, 0, randomSlide);
+    //       balance = true;
+    //   }
+
+    /*private void balanceGame()
+	{
+		transform.eulerAngles = Vector3.back * Time.deltaTime * EulerAngleVelocity.z * 5;
+		rigidbody.angularVelocity += EulerAngleVelocity * Time.deltaTime * 50;
+
+	}
+	*/
 
     private bool onGround()
     {
@@ -119,11 +144,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        spawnRoad();
-    }
-
-    private void spawnRoad()
-    {
         FindObjectOfType<Game>().spawnRoad();
     }
 
@@ -131,8 +151,8 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Rail"))
         {
-            
-            randomRotation();
+            //randomRotation();
+            onRail = true;
         }
     }
 }

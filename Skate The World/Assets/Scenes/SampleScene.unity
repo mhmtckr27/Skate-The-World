@@ -259,7 +259,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &963194228 stripped
+--- !u!4 &1464018704 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4970372635779658395, guid: 9e1df28390b15064e8b0e90c35800673,
     type: 3}
@@ -294,7 +294,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df8b95fede1f949458e022b8f86ae155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CurveOrigin: {fileID: 963194228}
+  CurveOrigin: {fileID: 1464018704}
   x: 0
   y: -25
   falloff: 25
