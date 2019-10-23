@@ -7,9 +7,11 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float jumpSpeed = 75;
     [SerializeField] private float speed = 20;
+    private Vector3 dstToCmr;
     private float dstToGnd;  // Distance to the road
     private bool balance;
     private bool onRail;
+    [SerializeField] private Camera camera;
 
     [SerializeField] private LayerMask layerMask;
     private Rigidbody rigidbody;
@@ -29,17 +31,23 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        dstToCmr = transform.position - camera.transform.position;
         dstToGnd = GetComponent<BoxCollider>().bounds.extents.y;
         rigidbody = FindObjectOfType<Rigidbody>();
     }
 
     private void Update()
     {
-
+        camera.transform.position = transform.position - dstToCmr;
         //if (onGround())
         {
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, speed);
             balance = false;
+        }
+        if (onGround())
+        {
+            onRail = false;
+            transform.eulerAngles = Vector3.zero;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && onGround())
@@ -118,28 +126,9 @@ public class Player : MonoBehaviour
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
     }
 
-    //private void randomRotation()
-    //   {
-    //       float randomSlide = UnityEngine.Random.Range(0, 1);
-    //       if (randomSlide <= 0.5f)
-    //           randomSlide = -45;
-    //       else
-    //           randomSlide = 45;
-    //       EulerAngleVelocity = new Vector3(0, 0, randomSlide);
-    //       balance = true;
-    //   }
-
-    /*private void balanceGame()
-	{
-		transform.eulerAngles = Vector3.back * Time.deltaTime * EulerAngleVelocity.z * 5;
-		rigidbody.angularVelocity += EulerAngleVelocity * Time.deltaTime * 50;
-
-	}
-	*/
-
     private bool onGround()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, dstToGnd + 0.1f);
+        return Physics.Raycast(transform.position, -Vector3.up, dstToGnd + 1f, layerMask);
     }
 
     private void OnTriggerEnter(Collider collision)

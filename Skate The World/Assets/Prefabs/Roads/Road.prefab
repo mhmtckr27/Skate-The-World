@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1515413518759277015}
   - component: {fileID: 1515413518759277014}
   - component: {fileID: 6858854261211251929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Road
   m_TagString: Road
   m_Icon: {fileID: 0}
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a8197c1a56cdb2f4a937938b05822946, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  roadType: 0
 --- !u!1 &5339612970231247279
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1515413518759277015}
   - component: {fileID: 1515413518759277014}
   - component: {fileID: 6858854261211251929}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RailRoad
   m_TagString: Road
   m_Icon: {fileID: 0}
@@ -32,7 +32,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 8.234071}
   m_Children:
   - {fileID: 6706575763276061034}
-  - {fileID: 7300769666452222563}
+  - {fileID: 325493252383045299}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -153,7 +153,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 10, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &7345488006642471490
+--- !u!1001 &298789378884769426
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -164,6 +164,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: rail
+      objectReference: {fileID: 0}
+    - target: {fileID: 3961682098692231730, guid: a3b2f1cf830a1124994a82dd6d6125b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 45565102187208737, guid: a3b2f1cf830a1124994a82dd6d6125b1,
         type: 3}
@@ -220,11 +225,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7944782259412934530, guid: a3b2f1cf830a1124994a82dd6d6125b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6421946071722266296, guid: a3b2f1cf830a1124994a82dd6d6125b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 396447192661912295, guid: a3b2f1cf830a1124994a82dd6d6125b1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3b2f1cf830a1124994a82dd6d6125b1, type: 3}
---- !u!4 &7300769666452222563 stripped
+--- !u!4 &325493252383045299 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 45565102187208737, guid: a3b2f1cf830a1124994a82dd6d6125b1,
     type: 3}
-  m_PrefabInstance: {fileID: 7345488006642471490}
+  m_PrefabInstance: {fileID: 298789378884769426}
   m_PrefabAsset: {fileID: 0}

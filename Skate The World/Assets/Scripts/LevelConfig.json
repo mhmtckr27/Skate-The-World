@@ -1,0 +1,22 @@
+{
+    "Items": [
+        {
+            "level": 1,
+            "roads": [
+                "road",
+                "railRoad",
+                "obstacleRoad"
+            ]
+        },
+
+        {
+            "level": 2,
+            "roads": [
+                "road",
+                "obstacleRoad",
+                "obstacleRoad",
+                "railRoad"
+            ]
+        }
+    ]
+}
