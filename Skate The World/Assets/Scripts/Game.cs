@@ -8,14 +8,12 @@ using System.Runtime.Serialization.Json;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private GameObject road;
-    [SerializeField] private GameObject obstacleRoad;
-    [SerializeField] private GameObject railRoad;
+    [SerializeField] private GameObject[] roadTypes;
     [SerializeField] private string jsonPath;
     [SerializeField] private int levelNo;
     private GameObject rd;
     private GameObject[] roads;
-    private GameObject currentRoad;
+    private GameObject currentRoad = null;
     private Road[] roadsObject;
     private int roadCount;
     private int currentRoadInd;
@@ -45,14 +43,14 @@ public class Game : MonoBehaviour
 
     private void getNextRoad()
     {
-        if (roadsObject[levelNo].roads[currentRoadInd].Equals("road"))
-            currentRoad = road;
-        else if (roadsObject[levelNo].roads[currentRoadInd].Equals("railRoad"))
-            currentRoad = railRoad;
-        else if (roadsObject[levelNo].roads[currentRoadInd].Equals("obstacleRoad"))
-            currentRoad = obstacleRoad;
-        else
-            currentRoad = null;
+        int i = 0;
+        currentRoad = null;
+        while (i<roadTypes.Length && !currentRoad)
+        {
+            if (roadsObject[levelNo].roads[currentRoadInd].Equals(roadTypes[i].name))
+                currentRoad = roadTypes[i];
+            i++;
+        }
         currentRoadInd++;
     }
 
@@ -61,10 +59,15 @@ public class Game : MonoBehaviour
         getNextRoad();
         if (currentRoad)
         {
-        rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0,0,currentRoad.transform.lossyScale.z*10),Quaternion.identity);
-        roads[++roadCount] = rd;
-        Destroy(roads[roadCount -2]);
+            rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0,0,currentRoad.transform.lossyScale.z*10),Quaternion.identity);
+            roads[++roadCount] = rd;
+            Destroy(roads[roadCount -2]);
         }
+
+    }
+
+    public void nextLevel()
+    {
 
     }
 

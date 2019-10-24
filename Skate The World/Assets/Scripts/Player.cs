@@ -131,9 +131,14 @@ public class Player : MonoBehaviour
         return Physics.Raycast(transform.position, -Vector3.up, dstToGnd + 1f, layerMask);
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerEnter(Collider collider)
     {
-        FindObjectOfType<Game>().spawnRoad();
+        if (collider.CompareTag("SpawnPoint"))
+            FindObjectOfType<Game>().spawnRoad(); // Spawn Road
+        else if (collider.CompareTag("FinishPoint"))
+            FindObjectOfType<Game>().nextLevel(); // Finish Level
+        else if (collider.CompareTag("SpeedBoostPoint"))
+            speed *= 5;
     }
 
     private void OnCollisionEnter(Collision collision)

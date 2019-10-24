@@ -3,19 +3,22 @@
         {
             "level": 1,
             "roads": [
-                "road",
-                "railRoad",
-                "obstacleRoad"
+                "Road",
+                "RailRoad",
+                "ObstacleRoad",
+                "RampRoad",
+                "FinishRoad"
             ]
         },
 
         {
             "level": 2,
             "roads": [
-                "road",
-                "obstacleRoad",
-                "obstacleRoad",
-                "railRoad"
+                "Road",
+                "ObstacleRoad",
+                "ObstacleRoad",
+                "RailRoad",
+                "FinishRoad"
             ]
         }
     ]
