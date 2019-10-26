@@ -1,0 +1,38 @@
+{
+    "Items": [
+        {
+            "level": 1,
+            "roads": [
+                "Road",
+                "RailRoad",
+                "ObstacleRoad",
+                "TwisterRoad",
+                "RampRoad"
+            ],
+            "walls": [
+                "RedWall",
+                "YellowWall",
+                "GreenWall"
+            ]
+
+        },
+
+        {
+            "level": 2,
+            "roads": [
+                "Road",
+                "ObstacleRoad",
+                "ObstacleRoad",
+                "RailRoad",
+                "TwisterRoad",
+                "RampRoad"
+
+            ],
+            "walls": [
+                "YellowWall",
+                "YellowWall",
+                "RedWall"
+            ]
+        }
+    ]
+}

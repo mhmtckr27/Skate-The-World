@@ -31,6 +31,7 @@ public class CurveController : MonoBehaviour
         bendAmountId = Shader.PropertyToID("_BendAmount");
         bendOriginId = Shader.PropertyToID("_BendOrigin");
         bendFalloffId = Shader.PropertyToID("_BendFalloff");
+        CurveOrigin = FindObjectOfType<Camera>().transform;
     }
 
     void Update()

@@ -9,14 +9,19 @@ using System.Runtime.Serialization.Json;
 public class Game : MonoBehaviour
 {
     [SerializeField] private GameObject[] roadTypes;
-    [SerializeField] private string jsonPath;
+    [SerializeField] private GameObject[] wallTypes;
     [SerializeField] private int levelNo;
+    private string jsonPath;
     private GameObject rd;
     private GameObject[] roads;
     private GameObject currentRoad = null;
+    private GameObject currentWall = null;
     private Road[] roadsObject;
     private int roadCount;
     private int currentRoadInd;
+    private int currentWallInd;
+    public int wallHitCount { get; set; }
+    private float wallOffset=0.25f;
 
 
     private void Start()
@@ -29,13 +34,20 @@ public class Game : MonoBehaviour
     {
         roadCount = 1;
         roads = new GameObject[50];
-        rd = Instantiate(currentRoad, currentRoad.transform.position + new Vector3(0, 0, 0), Quaternion.identity);
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            rd = Instantiate(currentRoad, currentRoad.transform.position, Quaternion.identity);
+        }
+        else
+        {
+            rd = Instantiate(currentRoad, FindObjectOfType<Player>().transform.position + new Vector3(0, -20, 0), Quaternion.identity);
+        }
         roads[++roadCount] = rd;
     }
 
     private void initLevelConfig()
     {
-        jsonPath = Application.dataPath + jsonPath;
+        jsonPath = Path.Combine(Application.streamingAssetsPath, "LevelConfig.json");
         string json = File.ReadAllText(jsonPath);
         roadsObject = JsonHelper.FromJson<Road>(json);
         getNextRoad();
@@ -45,7 +57,7 @@ public class Game : MonoBehaviour
     {
         int i = 0;
         currentRoad = null;
-        while (i<roadTypes.Length && !currentRoad)
+        while (i < roadTypes.Length && !currentRoad)
         {
             if (roadsObject[levelNo].roads[currentRoadInd].Equals(roadTypes[i].name))
                 currentRoad = roadTypes[i];
@@ -59,16 +71,54 @@ public class Game : MonoBehaviour
         getNextRoad();
         if (currentRoad)
         {
-            rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0,0,currentRoad.transform.lossyScale.z*10),Quaternion.identity);
+            rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0, 0, currentRoad.transform.lossyScale.z * 10), Quaternion.identity);
             roads[++roadCount] = rd;
-            Destroy(roads[roadCount -2]);
+            Destroy(roads[roadCount - 2]);
         }
 
     }
 
-    public void nextLevel()
+    public void spawnWall(Vector3 playerPos,Vector3 playerVel)
+    {
+        if (wallHitCount == roadsObject[levelNo].walls.Length)
+        {
+            FindObjectOfType<Player>().wallsFinished = true;
+            FindObjectOfType<Player>().pullDown();
+            return;
+        }
+        getNextWall();
+
+        if (currentWall)
+        {
+            Instantiate(currentWall, (playerPos + playerVel * wallOffset),Quaternion.identity);
+        }
+
+
+
+    }
+
+    private void getNextWall()
     {
 
+        int i = 0;
+        currentWall = null;
+        if(currentWallInd != roadsObject[levelNo].walls.Length)
+        {
+            while (i < wallTypes.Length && !currentWall)
+            {
+                if (roadsObject[levelNo].walls[currentWallInd].Equals(wallTypes[i].name))
+                    currentWall = wallTypes[i];
+                i++;
+            }
+        currentWallInd++;
+        }
+
+    }
+
+
+    public void nextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
 }
@@ -78,6 +128,7 @@ public class Road
 {
     public int level;
     public string[] roads;
+    public string[] walls;
 }
 
 public static class JsonHelper

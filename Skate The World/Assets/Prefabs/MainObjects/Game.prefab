@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6960991572568482456
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6960991572568482458}
+  - component: {fileID: 6960991572568482459}
+  m_Layer: 0
+  m_Name: Game
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6960991572568482458
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6960991572568482456}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6960991572568482459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6960991572568482456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a334db30d09c16d40bbc2f32c7dedcce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  roadTypes:
+  - {fileID: 1515413518759277013, guid: 93d4101241870614daa65e35b8138792, type: 3}
+  - {fileID: 1515413518759277013, guid: 5cd6e62849d25784fa41640b1824dd8f, type: 3}
+  - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
+  - {fileID: 1515413518759277013, guid: cb20552389a3d014989bb4ebb7882df7, type: 3}
+  - {fileID: 1515413518759277013, guid: e7ab07eee9c083440af839eef93b552b, type: 3}
+  wallTypes:
+  - {fileID: 1443689639073125954, guid: eefc767ec1f051e429364c88bd9b72fd, type: 3}
+  - {fileID: 1443689639073125954, guid: 16f57e7de719d4b408f12a7bb60bb936, type: 3}
+  - {fileID: 1443689639073125954, guid: 7147f74e25cceb140aafccf0a6d69acf, type: 3}
+  levelNo: 0
