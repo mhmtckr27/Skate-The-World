@@ -5,13 +5,22 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public bool wallsFinished { get; set; }
+
     private Player player;
     private Rigidbody rigidbody;
+
+    [SerializeField]
     private Animator animator;
-    [SerializeField] private float jumpSpeed = 75;
-    [SerializeField] private float speed = 20;
-    [SerializeField] private Camera camera;
-    [SerializeField] private LayerMask layerMask;
+    [SerializeField]
+    private float jumpSpeed = 75;
+    [SerializeField]
+    private float speed = 20;
+    [SerializeField]
+    private Camera camera;
+    [SerializeField]
+    private LayerMask layerMask;
+
     private SkateMoves skateMove;
     private Vector3 dstToCmr;
     private Vector3 EulerAngleVelocity;
@@ -19,7 +28,8 @@ public class Player : MonoBehaviour
     private int rot;
     private bool onRail;
     private bool isNextLevelReady;
-    public bool wallsFinished { get; set; }
+
+    
 
     private enum SkateMoves
     {
@@ -31,8 +41,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponentInParent<Animator>();
-        animator.enabled = false;
         DontDestroyOnLoad(this);
         DontDestroyOnLoad(camera);
         if (player == null)
@@ -75,8 +83,12 @@ public class Player : MonoBehaviour
             }
         }
 
+            if (Input.GetKeyDown(KeyCode.Space))
+                jump();
         if (onGround())
+        {
             neutral();
+        }
 
         if (onRail)
             rail();
@@ -108,8 +120,6 @@ public class Player : MonoBehaviour
     {
         onRail = false;
         transform.eulerAngles = Vector3.zero;
-        if (Input.GetKeyDown(KeyCode.Space))
-            jump();
     }
 
     private void rail()
@@ -195,6 +205,7 @@ public class Player : MonoBehaviour
 
     private void jump()
     {
+        animator.SetTrigger("Jump");
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
     }
 
@@ -216,8 +227,8 @@ public class Player : MonoBehaviour
             speed *= 5;
         else if (collider.CompareTag("TwistPoint"))
         {
-            animator.enabled = true;
-            animator.SetTrigger("TwistTrigger");
+            //animator.enabled = true;
+            //animator.SetTrigger("TwistTrigger");
         }
     }
 
