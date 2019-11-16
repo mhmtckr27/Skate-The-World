@@ -22,13 +22,31 @@ public class Game : MonoBehaviour
     private int currentWallInd;
     public int wallHitCount { get; set; }
     private float wallOffset=0.25f;
+    //private static Game game;
+    //public static Game Instance { get { return game; } }
+    
+    
 
+    //private void Awake()
+    //{
+    //    //if(game != null && game != this)
+    //    //{
+    //    //    Destroy(gameObject);
+    //    //}
+    //    //else
+    //    //{
+    //    //    game = this;
+    //    //}
+    //    //SceneManager.LoadScene(PlayerPrefs.GetInt("levelNo", 0));
+    //}
 
     private void Start()
     {
         initLevelConfig();
         initRoads();
     }
+
+
 
     private void initRoads()
     {
@@ -47,7 +65,12 @@ public class Game : MonoBehaviour
 
     private void initLevelConfig()
     {
+        
+
         jsonPath = Path.Combine(Application.streamingAssetsPath, "LevelConfig.json");
+
+
+
         string json = File.ReadAllText(jsonPath);
         roadsObject = JsonHelper.FromJson<Road>(json);
         getNextRoad();
@@ -71,7 +94,7 @@ public class Game : MonoBehaviour
         getNextRoad();
         if (currentRoad)
         {
-            rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0, 0, currentRoad.transform.lossyScale.z * 10), Quaternion.identity);
+            rd = Instantiate(currentRoad, rd.transform.position + new Vector3(0, -0.001f, currentRoad.transform.lossyScale.z * 10), Quaternion.identity);
             roads[++roadCount] = rd;
             Destroy(roads[roadCount - 2]);
         }
@@ -118,6 +141,7 @@ public class Game : MonoBehaviour
 
     public void nextLevel()
     {
+        PlayerPrefs.SetInt("levelNo", levelNo);
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

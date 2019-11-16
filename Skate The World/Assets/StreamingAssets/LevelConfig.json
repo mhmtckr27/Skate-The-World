@@ -5,8 +5,9 @@
             "roads": [
                 "Road",
                 "RailRoad",
+                "RailRoad",
+                "RailRoad",
                 "ObstacleRoad",
-                "TwisterRoad",
                 "RampRoad"
             ],
             "walls": [
@@ -24,8 +25,10 @@
                 "ObstacleRoad",
                 "ObstacleRoad",
                 "RailRoad",
-                "TwisterRoad",
-                "RampRoad"
+                "RampRoad",
+                "Road",
+                "Road",
+                "Road"
 
             ],
             "walls": [

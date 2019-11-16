@@ -123,8 +123,6 @@ C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Sk
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\Unity.Timeline.Editor.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\Unity.VSCode.Editor.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEditor.dll
-C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEditor.iOS.Extensions.Common.dll
-C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEditor.iOS.Extensions.Xcode.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEditor.UI.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEngine.AccessibilityModule.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\UnityEngine.AIModule.dll

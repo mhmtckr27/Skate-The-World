@@ -28,8 +28,17 @@ public class Player : MonoBehaviour
     private int rot;
     private bool onRail;
     private bool isNextLevelReady;
+    float tmp = -1;
 
-    
+    private Transform objectTransfom;
+
+    private float noMovementThreshold = 0.1f;
+    private const int noMovementFrames = 3;
+    Vector3[] previousLocations = new Vector3[noMovementFrames];
+    private bool isMoving;
+
+    //Vector3 beforePos;
+    //private bool isMoving;
 
     private enum SkateMoves
     {
@@ -43,6 +52,7 @@ public class Player : MonoBehaviour
     {
         DontDestroyOnLoad(this);
         DontDestroyOnLoad(camera);
+        
         if (player == null)
         {
             player = this;
@@ -52,6 +62,11 @@ public class Player : MonoBehaviour
             Destroy(gameObject);
             Destroy(camera);
         }
+
+        for (int i = 0; i < previousLocations.Length; i++)
+        {
+            previousLocations[i] = Vector3.zero;
+        }
     }
     // Start is called before the first frame update
     void Start()
@@ -59,21 +74,23 @@ public class Player : MonoBehaviour
 
         dstToCmr = transform.position - camera.transform.position;
         dstToGnd = GetComponent<BoxCollider>().bounds.extents.y;
-        rigidbody = GetComponent<Rigidbody>();
 
+        rigidbody = GetComponent<Rigidbody>();
+        //beforePos = Vector3.zero;
     }
+
+
 
     private void Update()
     {
+
+
         cameraFollow();
         if (isNextLevelReady)
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, 40, rigidbody.velocity.z);
         if (!isNextLevelReady)
             rigidbody.velocity = new Vector3(rigidbody.velocity.x, rigidbody.velocity.y, speed);
 
-
-        //transform.parent.position = transform.localPosition;
-        //transform.parent.position = transform.position;
 
         if (wallsFinished)
         {
@@ -83,11 +100,10 @@ public class Player : MonoBehaviour
             }
         }
 
-            if (Input.GetKeyDown(KeyCode.Space))
-                jump();
+
         if (onGround())
         {
-            neutral();
+        neutral();
         }
 
         if (onRail)
@@ -96,13 +112,66 @@ public class Player : MonoBehaviour
         checkForward();
         moveChange();
 
+
+
+        //Store the newest vector at the end of the list of vectors
+        for (int i = 0; i < previousLocations.Length - 1; i++)
+        {
+            previousLocations[i] = previousLocations[i + 1];
+        }
+        previousLocations[previousLocations.Length - 1] = transform.position;
+
+        //Check the distances between the points in your previous locations
+        //If for the past several updates, there are no movements smaller than the threshold,
+        //you can most likely assume that the object is not moving
+        for (int i = 0; i < previousLocations.Length - 1; i++)
+        {
+            if (Vector3.Distance(previousLocations[i], previousLocations[i + 1]) >= noMovementThreshold)
+            {
+                //The minimum movement has been detected between frames
+                isMoving = true;
+                break;
+            }
+            else
+            {
+                isMoving = false;
+            }
+        }
+
+
+
+        if (!isMoving)
+            gameOver();
+
+
+
     }
+
+    private void gameOver()
+    {
+        Debug.Break();
+    }
+
+    //IEnumerator WaitIfDead(float v)
+    //{
+    //    yield return new WaitForSeconds(v);
+    //}
 
     private void nextLevel()
     {
         wallsFinished = false;
         FindObjectOfType<Game>().nextLevel();
     }
+
+    private void neutral()
+    {
+        onRail = false;
+        rot = 0;
+        transform.eulerAngles = Vector3.zero;
+        if (Input.GetKeyDown(KeyCode.Space))
+            jump();
+    }
+
 
     public void pullDown()
     {
@@ -115,13 +184,6 @@ public class Player : MonoBehaviour
     {
         camera.transform.position = transform.position - dstToCmr;
     }
-
-    private void neutral()
-    {
-        onRail = false;
-        transform.eulerAngles = Vector3.zero;
-    }
-
     private void rail()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -142,22 +204,22 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.RightArrow))
             skateMove = SkateMoves.yellow;
 
-        switch (skateMove)
-        {
-            case SkateMoves.red:
-                GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case SkateMoves.green:
-                GetComponent<Renderer>().material.color = Color.green;
-                break;
-            case SkateMoves.yellow:
-                GetComponent<Renderer>().material.color = Color.yellow;
-                break;
-            default:
-                GetComponent<Renderer>().material.color = Color.blue;
-                break;
+        //switch (skateMove)
+        //{
+        //    case SkateMoves.red:
+        //        GetComponent<Renderer>().material.color = Color.red;
+        //        break;
+        //    case SkateMoves.green:
+        //        GetComponent<Renderer>().material.color = Color.green;
+        //        break;
+        //    case SkateMoves.yellow:
+        //        GetComponent<Renderer>().material.color = Color.yellow;
+        //        break;
+        //    default:
+        //        GetComponent<Renderer>().material.color = Color.blue;
+        //        break;
 
-        }
+        //}
     }
 
     private void checkForward()
@@ -205,13 +267,13 @@ public class Player : MonoBehaviour
 
     private void jump()
     {
-        animator.SetTrigger("Jump");
+        // animator.SetTrigger("Jump");
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
     }
 
     private bool onGround()
     {
-        return Physics.Raycast(transform.position, -Vector3.up, dstToGnd + 1f, layerMask);
+        return Physics.Raycast(transform.position, -Vector3.up, dstToGnd-0.5f, layerMask);
     }
 
     private void OnTriggerEnter(Collider collider)
