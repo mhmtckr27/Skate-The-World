@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
 
     private Transform objectTransfom;
 
-    private float noMovementThreshold = 0.1f;
+    private float noMovementThreshold = 0.01f;
     private const int noMovementFrames = 3;
     Vector3[] previousLocations = new Vector3[noMovementFrames];
     private bool isMoving;
@@ -71,19 +71,19 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         dstToCmr = transform.position - camera.transform.position;
         dstToGnd = GetComponent<BoxCollider>().bounds.extents.y;
 
         rigidbody = GetComponent<Rigidbody>();
         //beforePos = Vector3.zero;
+
     }
 
 
 
     private void Update()
     {
-
+        animator.SetFloat("velY", rigidbody.velocity.y);
 
         cameraFollow();
         if (isNextLevelReady)
@@ -100,10 +100,16 @@ public class Player : MonoBehaviour
             }
         }
 
+        if (rigidbody.velocity.y < 0f)
+        {
+            if (isGroundBelow())
+                animator.SetTrigger("land");
+        }
 
         if (onGround())
         {
-        neutral();
+            animator.ResetTrigger("land");
+            neutral();
         }
 
         if (onRail)
@@ -147,9 +153,12 @@ public class Player : MonoBehaviour
 
     }
 
+
+
     private void gameOver()
     {
-        Debug.Break();
+        animator.SetTrigger("die");
+        
     }
 
     //IEnumerator WaitIfDead(float v)
@@ -167,6 +176,8 @@ public class Player : MonoBehaviour
     {
         onRail = false;
         rot = 0;
+        animator.ResetTrigger("onRail");
+        animator.SetTrigger("ground");
         transform.eulerAngles = Vector3.zero;
         if (Input.GetKeyDown(KeyCode.Space))
             jump();
@@ -186,13 +197,16 @@ public class Player : MonoBehaviour
     }
     private void rail()
     {
+
+        animator.SetTrigger("onRail");
+        //transform.GetChild(2).transform.eulerAngles = new Vector3(-90, 180, 0);
         if (Input.GetKeyDown(KeyCode.LeftArrow))
             rot = 1;
 
         else if (Input.GetKeyDown(KeyCode.RightArrow))
             rot = -1;
 
-        transform.eulerAngles = new Vector3(0, 0, 60) * rot;
+        transform.eulerAngles = new Vector3(0, 0, 60 * rot);
     }
 
     private void moveChange()
@@ -255,6 +269,16 @@ public class Player : MonoBehaviour
                     StartCoroutine(waitNextWall());
                 }
             }
+            else
+            {
+                Destroy(hit.collider.gameObject);
+                if (isNextLevelReady)
+                {
+                    FindObjectOfType<Game>().wallHitCount++;
+                    StartCoroutine(waitNextWall());
+                }
+            }
+
         }
     }
 
@@ -267,17 +291,29 @@ public class Player : MonoBehaviour
 
     private void jump()
     {
-        // animator.SetTrigger("Jump");
+
+        animator.SetTrigger("jump");
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
+    }
+
+    private bool isGroundBelow()
+    {
+        return Physics.Raycast(transform.position, -Vector3.up, 1f, layerMask);
     }
 
     private bool onGround()
     {
+        
         return Physics.Raycast(transform.position, -Vector3.up, dstToGnd-0.5f, layerMask);
     }
 
     private void OnTriggerEnter(Collider collider)
     {
+
+        //if(collider.CompareTag("Road")){
+        //    animator.SetTrigger("land");
+        //}
+
         if (collider.CompareTag("SpawnPoint"))
             FindObjectOfType<Game>().spawnRoad(); // Spawn Road
         else if (collider.CompareTag("FinishPoint"))
@@ -298,6 +334,8 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Rail"))
         {
+
+            
             onRail = true;
         }
     }
