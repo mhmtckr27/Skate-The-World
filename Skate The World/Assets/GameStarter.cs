@@ -8,7 +8,7 @@ public class GameStarter : MonoBehaviour
 
     public void startGame()
     {
-        SceneManager.LoadScene(PlayerPrefs.GetInt("levelNo"));
+        SceneManager.LoadScene(0);
     }
     public void quitGame()
     {

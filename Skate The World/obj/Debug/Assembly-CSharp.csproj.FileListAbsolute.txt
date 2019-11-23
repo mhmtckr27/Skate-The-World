@@ -265,3 +265,4 @@ C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Sk
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\obj\Debug\Assembly-CSharp.dll
 C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\obj\Debug\Assembly-CSharp.pdb
+C:\Users\fazb7\Documents\Game Development\Unity\SkateTheWorld\Skate-The-World\Skate The World\Temp\bin\Debug\Assembly-CSharp-firstpass.pdb

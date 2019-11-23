@@ -56,7 +56,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        PlayerPrefs.DeleteAll();
+        //PlayerPrefs.DeleteAll();
         
     }
     // Start is called before the first frame update
@@ -128,8 +128,9 @@ public class Player : MonoBehaviour
 
         if (!onGround())
         {
-            if (playerInput.isEnabled && playerInput.downArrowPressed() && transform.position.y > dstToGnd*1.5f)
-                rigidbody.AddForce(0, -400, 0);
+            if (playerInput.isEnabled && playerInput.downArrowPressed())
+                if(transform.position.y+8 > dstToGnd * 1.5f)
+                    rigidbody.AddForce(0, -350* Mathf.Abs( rigidbody.velocity.y), 0);
         }
 
 

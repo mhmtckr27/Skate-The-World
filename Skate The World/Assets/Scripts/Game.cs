@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Json;
+using UnityEngine.Networking;
 
 public class Game : MonoBehaviour
 {
@@ -57,6 +58,8 @@ public class Game : MonoBehaviour
 
     private void Start()
     {
+        BetterStreamingAssets.Initialize();
+        roadsObject = ReadFromJson("levelconfig.json");
         initLevelConfig();
         initRoads();
     }
@@ -73,22 +76,52 @@ public class Game : MonoBehaviour
         //}
         //else
         {
-            rd = Instantiate(currentRoad, FindObjectOfType<Player>().transform.position + new Vector3(0, -10, currentRoad.transform.lossyScale.z * 6f), Quaternion.identity);
+            rd = Instantiate(currentRoad, FindObjectOfType<Player>().transform.position + new Vector3(0, -8, currentRoad.transform.lossyScale.z * 4f), Quaternion.identity);
             isOnNextLevel = false;
         }
         roads[++roadCount] = rd;
     }
 
+    public static Road[] ReadFromJson(string path)
+    {
+        if (!BetterStreamingAssets.FileExists(path))
+        {
+            Debug.LogErrorFormat("Streaming asset not found: {0}", path);
+            return null;
+        }
+
+        using (var stream = BetterStreamingAssets.OpenRead(path))
+        {
+            StreamReader reader = new StreamReader(stream);
+            string text = reader.ReadToEnd();
+            Road[] rds = JsonHelper.FromJson<Road>(text);
+            
+            return rds;
+        }
+
+    }
+
+
     private void initLevelConfig()
     {
-        
 
-        jsonPath = Path.Combine(Application.streamingAssetsPath, "LevelConfig.json");
+        //AssetBundle.LoadFromFileAsync(Application.streamingAssetsPath + "LevelConfig.json");
+        //jsonPath = Path.Combine(Application.streamingAssetsPath, "LevelConfig.json");
 
+        //if (!BetterStreamingAssets.FileExists(path))
+        //{
+        //    Debug.LogErrorFormat("Streaming asset not found: {0}", path);
+        //    return null;
+        //}
+        //using(var stream = BetterStreamingAssets.OpenRead(path))
+        //{
+        //    var serializer = 
 
+        //}
+        //string json = File.ReadAllText(jsonPath);
+        //roadsObject = JsonHelper.FromJson<Road>(json);
+        //var bundle = BetterStreamingAssets.LoadAssetBundle(path);
 
-        string json = File.ReadAllText(jsonPath);
-        roadsObject = JsonHelper.FromJson<Road>(json);
         getNextRoad();
     }
 
@@ -157,7 +190,7 @@ public class Game : MonoBehaviour
 
     public void nextLevel()
     {
-        PlayerPrefs.SetInt("levelNo", levelNo + 1);
+        //PlayerPrefs.SetInt("levelNo", levelNo + 1);
         //levelNo++;
         isOnNextLevel = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
