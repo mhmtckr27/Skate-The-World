@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c906670b6e1c1e498ee5c48beabe699, type: 3}
   m_Name: Player3
   m_EditorClassIdentifier: 
-  PlayerSkin: {fileID: 0}
+  PlayerSkin: {fileID: 1090121490646458, guid: 1f0c4e3812e594747bde16c9d1627cce, type: 3}
   SkateEfx: {fileID: 0}
   JumpEfx: {fileID: 0}
   FallEfx: {fileID: 0}

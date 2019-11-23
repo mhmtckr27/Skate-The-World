@@ -6,16 +6,16 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public bool wallsFinished { get; set; }
+    [SerializeField]
+    private GameManager m_GameManagerRef;
 
     private Player player;
     private Rigidbody rigidbody;
 
     [SerializeField]
     private Animator animator;
-    [SerializeField]
-    private float jumpSpeed = 75;
-    [SerializeField]
-    private float speed = 20;
+    public float jumpSpeed = 75;
+    public float speed = 20;
     [SerializeField]
     private Camera camera;
     [SerializeField]
@@ -98,6 +98,11 @@ public class Player : MonoBehaviour
 
     }
 
+    public void SetPlayerData(PlayerData newPlayerData)
+    {
+        //Skin değiştirme işlemleri
+    }
+
     private void nextLevel()
     {
         wallsFinished = false;
@@ -142,22 +147,22 @@ public class Player : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.RightArrow))
             skateMove = SkateMoves.yellow;
 
-        switch (skateMove)
-        {
-            case SkateMoves.red:
-                GetComponent<Renderer>().material.color = Color.red;
-                break;
-            case SkateMoves.green:
-                GetComponent<Renderer>().material.color = Color.green;
-                break;
-            case SkateMoves.yellow:
-                GetComponent<Renderer>().material.color = Color.yellow;
-                break;
-            default:
-                GetComponent<Renderer>().material.color = Color.blue;
-                break;
+        //switch (skateMove)
+        //{
+        //    case SkateMoves.red:
+        //        GetComponent<Renderer>().material.color = Color.red;
+        //        break;
+        //    case SkateMoves.green:
+        //        GetComponent<Renderer>().material.color = Color.green;
+        //        break;
+        //    case SkateMoves.yellow:
+        //        GetComponent<Renderer>().material.color = Color.yellow;
+        //        break;
+        //    default:
+        //        GetComponent<Renderer>().material.color = Color.blue;
+        //        break;
 
-        }
+        //}
     }
 
     private void checkForward()
@@ -217,14 +222,22 @@ public class Player : MonoBehaviour
     private void OnTriggerEnter(Collider collider)
     {
         if (collider.CompareTag("SpawnPoint"))
+        {
             FindObjectOfType<Game>().spawnRoad(); // Spawn Road
+        }
         else if (collider.CompareTag("FinishPoint"))
         {
             //speed /= 5;
+            print("FinishPoint Called");
+            PlayerPrefs.SetInt("Level", PlayerPrefs.GetInt("Level") + 1);
+
+            m_GameManagerRef.SetNewLevel();
             StartCoroutine(waitForNextLevel());// Finish Level
         }
         else if (collider.CompareTag("SpeedBoostPoint"))
-            speed *= 5;
+        {
+            //speed *= 5;
+        }
         else if (collider.CompareTag("TwistPoint"))
         {
             //animator.enabled = true;

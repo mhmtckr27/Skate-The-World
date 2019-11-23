@@ -6,8 +6,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Game Data Editor", menuName = "Game Data")]
 public class GameData : ScriptableObject
 {
+    [Space]
     public string SceneName;
 
-    [Space]
+    [Space, SerializeField]
     public List<LevelData> Levels = new List<LevelData>();
 }

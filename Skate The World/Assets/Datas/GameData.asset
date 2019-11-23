@@ -12,5 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ce39571ef02d9e4c959a10084067d44, type: 3}
   m_Name: GameData
   m_EditorClassIdentifier: 
-  SceneName: 
-  LevelDatas: []
+  SceneName: France
+  Levels:
+  - Name: Level 1
+    MovementSpeed: 20
+    MovementAcceleration: 0
+    Roads:
+    - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
+    - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
+    - {fileID: 1515413518759277013, guid: cb20552389a3d014989bb4ebb7882df7, type: 3}
+  - Name: Level 2
+    MovementSpeed: 20
+    MovementAcceleration: 0
+    Roads:
+    - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
+    - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
+    - {fileID: 1515413518759277013, guid: cb20552389a3d014989bb4ebb7882df7, type: 3}

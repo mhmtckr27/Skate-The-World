@@ -60,7 +60,10 @@ public class Game : MonoBehaviour
         while (i < roadTypes.Length && !currentRoad)
         {
             if (roadsObject[levelNo].roads[currentRoadInd].Equals(roadTypes[i].name))
+            {
                 currentRoad = roadTypes[i];
+            }
+                
             i++;
         }
         currentRoadInd++;
