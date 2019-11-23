@@ -11,6 +11,8 @@ public class Game : MonoBehaviour
     [SerializeField] private GameObject[] roadTypes;
     [SerializeField] private GameObject[] wallTypes;
     [SerializeField] private int levelNo;
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject mainCamera;
     private string jsonPath;
     private GameObject rd;
     private GameObject[] roads;
@@ -22,13 +24,26 @@ public class Game : MonoBehaviour
     private int currentWallInd;
     public int wallHitCount { get; set; }
     private float wallOffset=0.25f;
+    public bool isOnNextLevel = false;
+    public int initLevelInd;
     //private static Game game;
     //public static Game Instance { get { return game; } }
-    
-    
 
-    //private void Awake()
-    //{
+
+
+    private void Awake()
+    {
+        if (!FindObjectOfType<Player>())
+        {
+            player = Instantiate(player);
+            player.GetComponent<Player>().enabled = true;
+        }
+        if (!FindObjectOfType<Camera>())
+        {
+            mainCamera = Instantiate(mainCamera);
+            player.GetComponent<Player>().camera = mainCamera.GetComponent<Camera>();
+            FindObjectOfType<CurveController>().GetComponent<CurveController>().CurveOrigin = mainCamera.transform;
+        }
     //    //if(game != null && game != this)
     //    //{
     //    //    Destroy(gameObject);
@@ -38,7 +53,7 @@ public class Game : MonoBehaviour
     //    //    game = this;
     //    //}
     //    //SceneManager.LoadScene(PlayerPrefs.GetInt("levelNo", 0));
-    //}
+    }
 
     private void Start()
     {
@@ -52,13 +67,14 @@ public class Game : MonoBehaviour
     {
         roadCount = 1;
         roads = new GameObject[50];
-        if (SceneManager.GetActiveScene().buildIndex == 0)
+        //if (SceneManager.GetActiveScene().buildIndex == initLevelInd)
+        //{
+        //    rd = Instantiate(currentRoad, currentRoad.transform.position + new Vector3(0,0, currentRoad.transform.lossyScale.z * 2.5f), Quaternion.identity);
+        //}
+        //else
         {
-            rd = Instantiate(currentRoad, currentRoad.transform.position, Quaternion.identity);
-        }
-        else
-        {
-            rd = Instantiate(currentRoad, FindObjectOfType<Player>().transform.position + new Vector3(0, -20, 0), Quaternion.identity);
+            rd = Instantiate(currentRoad, FindObjectOfType<Player>().transform.position + new Vector3(0, -10, currentRoad.transform.lossyScale.z * 6f), Quaternion.identity);
+            isOnNextLevel = false;
         }
         roads[++roadCount] = rd;
     }
@@ -103,6 +119,7 @@ public class Game : MonoBehaviour
 
     public void spawnWall(Vector3 playerPos,Vector3 playerVel)
     {
+
         if (wallHitCount == roadsObject[levelNo].walls.Length)
         {
             FindObjectOfType<Player>().wallsFinished = true;
@@ -119,7 +136,6 @@ public class Game : MonoBehaviour
 
 
     }
-
     private void getNextWall()
     {
 
@@ -141,7 +157,9 @@ public class Game : MonoBehaviour
 
     public void nextLevel()
     {
-        PlayerPrefs.SetInt("levelNo", levelNo);
+        PlayerPrefs.SetInt("levelNo", levelNo + 1);
+        //levelNo++;
+        isOnNextLevel = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 

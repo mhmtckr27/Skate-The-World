@@ -3,14 +3,15 @@
         {
             "level": 1,
             "roads": [
-                "Road",
-
                 "RampRoad"
             ],
             "walls": [
                 "Wall",
                 "Wall",
+                "Wall",
+                "Wall",
                 "Wall"
+
             ]
 
         },
@@ -22,7 +23,6 @@
                 "ObstacleRoad",
                 "ObstacleRoad",
                 "RailRoad",
-                "RampRoad",
                 "Road",
                 "Road",
                 "Road"

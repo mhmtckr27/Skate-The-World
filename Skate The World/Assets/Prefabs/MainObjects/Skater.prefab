@@ -106,6 +106,7 @@ GameObject:
   - component: {fileID: 8600239943596290594}
   - component: {fileID: 8600239943596290595}
   - component: {fileID: 8600239943596290605}
+  - component: {fileID: 372500929}
   m_Layer: 0
   m_Name: Skater
   m_TagString: Untagged
@@ -176,8 +177,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.7535497, y: 1.5439667, z: 1.0253682}
-  m_Center: {x: 0.07211643, y: 0.6886015, z: 0}
+  m_Size: {x: 0.7535497, y: 1.5198361, z: 0.9336404}
+  m_Center: {x: 0.07211643, y: 0.7006672, z: -0.04586438}
 --- !u!114 &8600239943596290605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,6 +198,19 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 256
+--- !u!114 &372500929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323095613328028743}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74d4499f0cb844f40b72b78f6a504be9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isEnabled: 0
 --- !u!1 &381463363105163550
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,22 +2041,22 @@ PrefabInstance:
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.70710707
+      value: -0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.00000029802322
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.0000002810266
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071066
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
@@ -2052,7 +2066,7 @@ PrefabInstance:
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 2331685003695901230, guid: 0b14737ae49cd2f4a871379db456ece6,
         type: 3}

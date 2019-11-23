@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -17,25 +18,30 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float speed = 20;
     [SerializeField]
-    private Camera camera;
+    public Camera camera;
     [SerializeField]
     private LayerMask layerMask;
 
     private SkateMoves skateMove;
     private Vector3 dstToCmr;
     private Vector3 EulerAngleVelocity;
+    private PlayerInput playerInput;
     private float dstToGnd;  // Distance to the road
     private int rot;
     private bool onRail;
     private bool isNextLevelReady;
-    float tmp = -1;
+
+
+
 
     private Transform objectTransfom;
 
-    private float noMovementThreshold = 0.01f;
+    private float noMovementThreshold = 0.005f;
     private const int noMovementFrames = 3;
     Vector3[] previousLocations = new Vector3[noMovementFrames];
     private bool isMoving;
+
+    
 
     //Vector3 beforePos;
     //private bool isMoving;
@@ -50,9 +56,15 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        PlayerPrefs.DeleteAll();
+        
+    }
+    // Start is called before the first frame update
+    void Start()
+    {
         DontDestroyOnLoad(this);
         DontDestroyOnLoad(camera);
-        
+
         if (player == null)
         {
             player = this;
@@ -67,16 +79,14 @@ public class Player : MonoBehaviour
         {
             previousLocations[i] = Vector3.zero;
         }
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
+
+
         dstToCmr = transform.position - camera.transform.position;
         dstToGnd = GetComponent<BoxCollider>().bounds.extents.y;
 
         rigidbody = GetComponent<Rigidbody>();
         //beforePos = Vector3.zero;
-
+        playerInput = GetComponent<PlayerInput>();
     }
 
 
@@ -103,17 +113,25 @@ public class Player : MonoBehaviour
         if (rigidbody.velocity.y < 0f)
         {
             if (isGroundBelow())
-                animator.SetTrigger("land");
+                animator.SetBool("land", true);
         }
 
         if (onGround())
         {
-            animator.ResetTrigger("land");
-            neutral();
+            //animator.SetBool("land", false);
+            //neutral();
+            Invoke("deneme", 0.025f);
         }
 
         if (onRail)
             rail();
+
+        if (!onGround())
+        {
+            if (playerInput.isEnabled && playerInput.downArrowPressed() && transform.position.y > dstToGnd*1.5f)
+                rigidbody.AddForce(0, -400, 0);
+        }
+
 
         checkForward();
         moveChange();
@@ -138,7 +156,7 @@ public class Player : MonoBehaviour
                 isMoving = true;
                 break;
             }
-            else
+            else if(!FindObjectOfType<Game>().isOnNextLevel)
             {
                 isMoving = false;
             }
@@ -148,23 +166,26 @@ public class Player : MonoBehaviour
 
         if (!isMoving)
             gameOver();
-
-
-
-    }
-
-
-
-    private void gameOver()
-    {
-        animator.SetTrigger("die");
         
     }
 
-    //IEnumerator WaitIfDead(float v)
-    //{
-    //    yield return new WaitForSeconds(v);
-    //}
+
+    private void deneme()
+    {
+        animator.SetBool("land", false);
+        neutral();
+    }
+    private void gameOver()
+    {
+        animator.SetTrigger("die");
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Death")){
+            SceneManager.LoadScene("Start");
+            Destroy(gameObject);
+            Destroy(camera.gameObject);
+        }
+
+
+    }
 
     private void nextLevel()
     {
@@ -179,7 +200,7 @@ public class Player : MonoBehaviour
         animator.ResetTrigger("onRail");
         animator.SetTrigger("ground");
         transform.eulerAngles = Vector3.zero;
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (playerInput.isEnabled && playerInput.jumpPressed())
             jump();
     }
 
@@ -187,7 +208,7 @@ public class Player : MonoBehaviour
     public void pullDown()
     {
         isNextLevelReady = false;
-        rigidbody.AddForce(0, -2000, 0);
+        rigidbody.AddForce(0, -2000 + FindObjectOfType<Game>().wallHitCount*-1000, 0);
         speed /= 5;
     }
 
@@ -200,10 +221,10 @@ public class Player : MonoBehaviour
 
         animator.SetTrigger("onRail");
         //transform.GetChild(2).transform.eulerAngles = new Vector3(-90, 180, 0);
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (playerInput.isEnabled && playerInput.leftArrowPressed())
             rot = 1;
 
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (playerInput.isEnabled && playerInput.rightArrowPressed())
             rot = -1;
 
         transform.eulerAngles = new Vector3(0, 0, 60 * rot);
@@ -211,11 +232,11 @@ public class Player : MonoBehaviour
 
     private void moveChange()
     {
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (playerInput.isEnabled && playerInput.leftArrowPressed())
             skateMove = SkateMoves.red;
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (playerInput.isEnabled && playerInput.upArrowPressed())
             skateMove = SkateMoves.green;
-        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        else if (playerInput.rightArrowPressed())
             skateMove = SkateMoves.yellow;
 
         //switch (skateMove)
@@ -239,7 +260,7 @@ public class Player : MonoBehaviour
     private void checkForward()
     {
         RaycastHit hit;
-        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f) && !onGround())
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
         {
 
             if (skateMove == SkateMoves.red && hit.collider.CompareTag("RedWall"))
@@ -269,7 +290,7 @@ public class Player : MonoBehaviour
                     StartCoroutine(waitNextWall());
                 }
             }
-            else
+            else if(hit.collider.CompareTag("Wall"))
             {
                 Destroy(hit.collider.gameObject);
                 if (isNextLevelReady)
@@ -293,6 +314,7 @@ public class Player : MonoBehaviour
     {
 
         animator.SetTrigger("jump");
+        rigidbody.AddForce(0, 150, 0);
         rigidbody.velocity = new Vector3(rigidbody.velocity.x, jumpSpeed, rigidbody.velocity.z);
     }
 
@@ -303,7 +325,6 @@ public class Player : MonoBehaviour
 
     private bool onGround()
     {
-        
         return Physics.Raycast(transform.position, -Vector3.up, dstToGnd-0.5f, layerMask);
     }
 
@@ -319,14 +340,15 @@ public class Player : MonoBehaviour
         else if (collider.CompareTag("FinishPoint"))
         {
             //speed /= 5;
+            playerInput.isEnabled = true;
             StartCoroutine(waitForNextLevel());// Finish Level
         }
         else if (collider.CompareTag("SpeedBoostPoint"))
             speed *= 5;
-        else if (collider.CompareTag("TwistPoint"))
+
+        else if (collider.CompareTag("LockInput"))
         {
-            //animator.enabled = true;
-            //animator.SetTrigger("TwistTrigger");
+            playerInput.isEnabled = false;
         }
     }
 
@@ -334,17 +356,19 @@ public class Player : MonoBehaviour
     {
         if (collision.collider.CompareTag("Rail"))
         {
-
-            
             onRail = true;
+        }
+        else if (collision.collider.CompareTag("enemy"))
+        {
+            gameOver();
         }
     }
 
     IEnumerator waitForNextLevel()
     {
         yield return new WaitForSeconds(.25f);
-        FindObjectOfType<Game>().spawnWall(transform.position, rigidbody.velocity);
         isNextLevelReady = true;
+        FindObjectOfType<Game>().spawnWall(transform.position, rigidbody.velocity);
 
     }
 }

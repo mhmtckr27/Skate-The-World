@@ -33,6 +33,7 @@ Transform:
   - {fileID: 6706575763276061034}
   - {fileID: 5413322044983070412}
   - {fileID: 131617079653138435}
+  - {fileID: 25080355388602595}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -167,8 +168,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7311830860388136915}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0.01, z: -1.388}
-  m_LocalScale: {x: 0.79703456, y: 1, z: 0.114114}
+  m_LocalPosition: {x: 0, y: 0.0099999, z: -1.388}
+  m_LocalScale: {x: 0.79703456, y: 16.582737, z: 0.114114}
   m_Children: []
   m_Father: {fileID: 1515413518759277009}
   m_RootOrder: 2
@@ -233,6 +234,50 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &7386255181065644772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 25080355388602595}
+  - component: {fileID: 510741433719788412}
+  m_Layer: 8
+  m_Name: LockJumpPoint
+  m_TagString: LockInput
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &25080355388602595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7386255181065644772}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -3.39}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1515413518759277009}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &510741433719788412
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7386255181065644772}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10.839542, y: 16.903229, z: 1.6377547}
+  m_Center: {x: -0.1142149, y: 0.6967583, z: -0.31887734}
 --- !u!1 &8146585160292265270
 GameObject:
   m_ObjectHideFlags: 0
