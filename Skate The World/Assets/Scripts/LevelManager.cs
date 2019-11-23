@@ -9,6 +9,7 @@ public class LevelManager : MonoBehaviour
     private GameData GameData;
 
     [Space, SerializeField]
+    private Player _player;
 
     [Space, Header("Roads"), SerializeField]
     private GameObject finishRoad;
