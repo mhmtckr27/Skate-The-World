@@ -4,8 +4,6 @@
             "level": 1,
             "roads": [
                 "Road",
-                "Road",
-                "Road",
                 "RampRoad"
             ],
             "walls": [

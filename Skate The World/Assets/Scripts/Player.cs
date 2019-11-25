@@ -22,6 +22,10 @@ public class Player : MonoBehaviour
     [SerializeField]
     private LayerMask layerMask;
 
+    [SerializeField] private GameObject explosion;
+
+    [SerializeField] private Sprite[] sprites;
+
     private SkateMoves skateMove;
     private Vector3 dstToCmr;
     private Vector3 EulerAngleVelocity;
@@ -62,6 +66,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        skateMove = SkateMoves.empty;
         DontDestroyOnLoad(this);
         DontDestroyOnLoad(camera);
 
@@ -87,6 +92,7 @@ public class Player : MonoBehaviour
         rigidbody = GetComponent<Rigidbody>();
         //beforePos = Vector3.zero;
         playerInput = GetComponent<PlayerInput>();
+        playerInput.isEnabled = true;
     }
 
 
@@ -191,6 +197,7 @@ public class Player : MonoBehaviour
     private void nextLevel()
     {
         wallsFinished = false;
+        playerInput.isEnabled = true;
         FindObjectOfType<Game>().nextLevel();
     }
 
@@ -237,36 +244,41 @@ public class Player : MonoBehaviour
             skateMove = SkateMoves.red;
         else if (playerInput.isEnabled && playerInput.upArrowPressed())
             skateMove = SkateMoves.green;
-        else if (playerInput.rightArrowPressed())
+        else if (playerInput.isEnabled && playerInput.rightArrowPressed())
             skateMove = SkateMoves.yellow;
+        else if (playerInput.isEnabled && playerInput.downArrowPressed())
+            skateMove = SkateMoves.empty;
 
-        //switch (skateMove)
-        //{
-        //    case SkateMoves.red:
-        //        GetComponent<Renderer>().material.color = Color.red;
-        //        break;
-        //    case SkateMoves.green:
-        //        GetComponent<Renderer>().material.color = Color.green;
-        //        break;
-        //    case SkateMoves.yellow:
-        //        GetComponent<Renderer>().material.color = Color.yellow;
-        //        break;
-        //    default:
-        //        GetComponent<Renderer>().material.color = Color.blue;
-        //        break;
+        SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
+        switch (skateMove)
+        {
+            case SkateMoves.red:
+                renderer.sprite = sprites[0];
+                break;
+            case SkateMoves.green:
+                renderer.sprite = sprites[1];
+                break;
+            case SkateMoves.yellow:
+                renderer.sprite = sprites[2];
+                break;
+            default:
+                renderer.sprite = null;
+                break;
 
-        //}
+        }
     }
 
     private void checkForward()
     {
         RaycastHit hit;
+        Vector3 effectNormal = Vector3.back;
         if (Physics.Raycast(transform.position, Vector3.forward, out hit, 1f))
         {
 
             if (skateMove == SkateMoves.red && hit.collider.CompareTag("RedWall"))
             {
                 Destroy(hit.collider.gameObject);
+                Instantiate(explosion, transform.position + new Vector3(0, 3, 1), Quaternion.FromToRotation(Vector3.up, effectNormal));
                 if (isNextLevelReady)
                 {
                     FindObjectOfType<Game>().wallHitCount++;
@@ -276,6 +288,7 @@ public class Player : MonoBehaviour
             else if (skateMove == SkateMoves.green && hit.collider.CompareTag("GreenWall"))
             {
                 Destroy(hit.collider.gameObject);
+                Instantiate(explosion, transform.position + new Vector3(0, 3, 1), Quaternion.FromToRotation(Vector3.up, effectNormal));
                 if (isNextLevelReady)
                 {
                     FindObjectOfType<Game>().wallHitCount++;
@@ -285,6 +298,7 @@ public class Player : MonoBehaviour
             else if (skateMove == SkateMoves.yellow && hit.collider.CompareTag("YellowWall"))
             {
                 Destroy(hit.collider.gameObject);
+                Instantiate(explosion, transform.position + new Vector3(0, 3, 1), Quaternion.FromToRotation(Vector3.up, effectNormal));
                 if (isNextLevelReady)
                 {
                     FindObjectOfType<Game>().wallHitCount++;
@@ -294,6 +308,7 @@ public class Player : MonoBehaviour
             else if(hit.collider.CompareTag("Wall"))
             {
                 Destroy(hit.collider.gameObject);
+                Instantiate(explosion, transform.position + new Vector3(0,3,1) , Quaternion.FromToRotation(Vector3.up, effectNormal));
                 if (isNextLevelReady)
                 {
                     FindObjectOfType<Game>().wallHitCount++;
@@ -341,7 +356,7 @@ public class Player : MonoBehaviour
         else if (collider.CompareTag("FinishPoint"))
         {
             //speed /= 5;
-            playerInput.isEnabled = true;
+            //playerInput.isEnabled = true;
             StartCoroutine(waitForNextLevel());// Finish Level
         }
         else if (collider.CompareTag("SpeedBoostPoint"))
