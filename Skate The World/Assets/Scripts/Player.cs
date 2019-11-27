@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
     private bool onRail;
     private bool isNextLevelReady;
 
-
+    public bool isSlideFinished;
 
 
     private Transform objectTransfom;
@@ -55,6 +55,7 @@ public class Player : MonoBehaviour
         red,
         green,
         yellow,
+        purple,
         empty,
     };
 
@@ -122,22 +123,34 @@ public class Player : MonoBehaviour
                 animator.SetBool("land", true);
         }
 
-        if (onGround())
+        if (onGround() && isSlideFinished)
         {
-            //animator.SetBool("land", false);
-            //neutral();
-            Invoke("deneme", 0.025f);
+            skateMove = SkateMoves.empty;
+                isSlideFinished = false;
+        }
+
+        if (onGround() && ((animator.GetCurrentAnimatorStateInfo(0).IsName("Ground")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))))
+        {
+            animator.SetBool("land", false);
+            neutral();
+            if (playerInput.isEnabled && playerInput.downArrowPressed() && !(animator.GetCurrentAnimatorStateInfo(0).IsName("Slide")))
+            {
+                animator.SetTrigger("slide");
+            }
         }
 
         if (onRail)
             rail();
 
+
         if (!onGround())
         {
             if (playerInput.isEnabled && playerInput.downArrowPressed())
-                if(transform.position.y+8 > dstToGnd * 1.5f)
+
+                if(transform.position.y+8 > dstToGnd * 1.3f)
                     rigidbody.AddForce(0, -350* Mathf.Abs( rigidbody.velocity.y), 0);
         }
+
 
 
         checkForward();
@@ -177,11 +190,23 @@ public class Player : MonoBehaviour
     }
 
 
-    private void deneme()
+    //private void deneme()
+    //{
+    //    animator.SetBool("land", false);
+    //    neutral();
+    //}
+    private void neutral()
     {
-        animator.SetBool("land", false);
-        neutral();
+        onRail = false;
+        rot = 0;
+        animator.ResetTrigger("onRail");
+        animator.SetTrigger("ground");
+        transform.eulerAngles = Vector3.zero;
+        if (playerInput.isEnabled && playerInput.jumpPressed())
+            jump();
     }
+
+
     private void gameOver()
     {
         animator.SetTrigger("die");
@@ -201,16 +226,6 @@ public class Player : MonoBehaviour
         FindObjectOfType<Game>().nextLevel();
     }
 
-    private void neutral()
-    {
-        onRail = false;
-        rot = 0;
-        animator.ResetTrigger("onRail");
-        animator.SetTrigger("ground");
-        transform.eulerAngles = Vector3.zero;
-        if (playerInput.isEnabled && playerInput.jumpPressed())
-            jump();
-    }
 
 
     public void pullDown()
@@ -246,8 +261,8 @@ public class Player : MonoBehaviour
             skateMove = SkateMoves.green;
         else if (playerInput.isEnabled && playerInput.rightArrowPressed())
             skateMove = SkateMoves.yellow;
-        else if (playerInput.isEnabled && playerInput.downArrowPressed())
-            skateMove = SkateMoves.empty;
+        else if (playerInput.isEnabled && playerInput.downArrowPressed() && onGround())
+            skateMove = SkateMoves.purple;
 
         SpriteRenderer renderer = GetComponentInChildren<SpriteRenderer>();
         switch (skateMove)
@@ -260,6 +275,9 @@ public class Player : MonoBehaviour
                 break;
             case SkateMoves.yellow:
                 renderer.sprite = sprites[2];
+                break;
+            case SkateMoves.purple:
+                renderer.sprite = sprites[3];
                 break;
             default:
                 renderer.sprite = null;
