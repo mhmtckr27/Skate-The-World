@@ -17,6 +17,8 @@ TagManager:
   - Wall
   - LockInput
   - BlackWall
+  - enemy
+  - PurpleWall
   layers:
   - Default
   - TransparentFX

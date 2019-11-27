@@ -128,6 +128,10 @@ public class Player : MonoBehaviour
             skateMove = SkateMoves.empty;
                 isSlideFinished = false;
         }
+        if (onGround() && animator.GetCurrentAnimatorStateInfo(0).IsName("Rail"))
+        {
+            neutral();
+        }
 
         if (onGround() && ((animator.GetCurrentAnimatorStateInfo(0).IsName("Ground")) || (animator.GetCurrentAnimatorStateInfo(0).IsName("Slide"))))
         {
@@ -209,8 +213,10 @@ public class Player : MonoBehaviour
 
     private void gameOver()
     {
-        animator.SetTrigger("die");
-        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Death")){
+        animator.SetBool("die",true);
+        if(animator.GetCurrentAnimatorStateInfo(0).IsName("Falling Back Death"))
+            animator.SetBool("die", false);
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Death")){
             SceneManager.LoadScene("Start");
             Destroy(gameObject);
             Destroy(camera.gameObject);
@@ -257,7 +263,7 @@ public class Player : MonoBehaviour
     {
         if (playerInput.isEnabled && playerInput.leftArrowPressed())
             skateMove = SkateMoves.red;
-        else if (playerInput.isEnabled && playerInput.upArrowPressed())
+        else if (playerInput.isEnabled && (playerInput.upArrowPressed() || playerInput.jumpPressed()))
             skateMove = SkateMoves.green;
         else if (playerInput.isEnabled && playerInput.rightArrowPressed())
             skateMove = SkateMoves.yellow;
@@ -314,6 +320,16 @@ public class Player : MonoBehaviour
                 }
             }
             else if (skateMove == SkateMoves.yellow && hit.collider.CompareTag("YellowWall"))
+            {
+                Destroy(hit.collider.gameObject);
+                Instantiate(explosion, transform.position + new Vector3(0, 3, 1), Quaternion.FromToRotation(Vector3.up, effectNormal));
+                if (isNextLevelReady)
+                {
+                    FindObjectOfType<Game>().wallHitCount++;
+                    StartCoroutine(waitNextWall());
+                }
+            }
+            else if (skateMove == SkateMoves.purple && hit.collider.CompareTag("PurpleWall"))
             {
                 Destroy(hit.collider.gameObject);
                 Instantiate(explosion, transform.position + new Vector3(0, 3, 1), Quaternion.FromToRotation(Vector3.up, effectNormal));

@@ -49,7 +49,7 @@ MonoBehaviour:
   - {fileID: 1515413518759277013, guid: 94588ef69bd5d614195f80475c6f966a, type: 3}
   - {fileID: 1515413518759277013, guid: cb20552389a3d014989bb4ebb7882df7, type: 3}
   - {fileID: 1515413518759277013, guid: e7ab07eee9c083440af839eef93b552b, type: 3}
-  - {fileID: 1515413518759277013, guid: 408859b65f4e0634ea8b9f35d05f1327, type: 3}
+  - {fileID: 6193889437047145998, guid: 2f5ad46aa181e044daa84e8618452f6c, type: 3}
   wallTypes:
   - {fileID: 1443689639073125954, guid: eefc767ec1f051e429364c88bd9b72fd, type: 3}
   - {fileID: 1443689639073125954, guid: 16f57e7de719d4b408f12a7bb60bb936, type: 3}
@@ -60,3 +60,4 @@ MonoBehaviour:
   mainCamera: {fileID: 845188524954634821, guid: e32a97e5d54a306478473d2fda5fa2ec,
     type: 3}
   isOnNextLevel: 0
+  initLevelInd: 0

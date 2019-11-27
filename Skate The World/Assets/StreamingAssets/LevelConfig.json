@@ -5,9 +5,9 @@
             "roads": [
                 "Road",
                 "ObstacleRoad",
+                "RailRoad",
                 "Road",
-                "Road",
-                "Road",
+                "ObstacleRoad2",
                 "RampRoad"
             ],
             "walls": [

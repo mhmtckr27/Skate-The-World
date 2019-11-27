@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 8242222964972417715}
   - component: {fileID: 8242222964972417676}
   m_Layer: 0
-  m_Name: Wall
-  m_TagString: Wall
+  m_Name: GroundLeft
+  m_TagString: RedWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 6453126ce19f7ec44ab2b105c60ffdde, type: 2}
+  - {fileID: 2100000, guid: 5fd9d0522949acb4e9aa007a85f7609f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
