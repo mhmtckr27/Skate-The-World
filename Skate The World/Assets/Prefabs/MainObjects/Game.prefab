@@ -52,9 +52,11 @@ MonoBehaviour:
   - {fileID: 6193889437047145998, guid: 2f5ad46aa181e044daa84e8618452f6c, type: 3}
   wallTypes:
   - {fileID: 1443689639073125954, guid: eefc767ec1f051e429364c88bd9b72fd, type: 3}
-  - {fileID: 1443689639073125954, guid: 16f57e7de719d4b408f12a7bb60bb936, type: 3}
-  - {fileID: 1443689639073125954, guid: 7147f74e25cceb140aafccf0a6d69acf, type: 3}
+  - {fileID: 2448904567028127274, guid: ec515e5cf77e7bb4f978cf8fd7196a1c, type: 3}
+  - {fileID: 1606577734817479534, guid: 353d94822e6a4c74ca14fd00c97ac839, type: 3}
   - {fileID: 8242222964972417677, guid: 665b3972992763b4580ef96966f7d70b, type: 3}
+  - {fileID: 539007372506787225, guid: f181014a4bed24c4baac6721a302a9e0, type: 3}
+  - {fileID: 1443689639073125954, guid: 7169548d16dcfc44a899640f934e8399, type: 3}
   levelNo: 0
   player: {fileID: 323095613328028743, guid: 52746dc9366666741a4519c2efae5f6b, type: 3}
   mainCamera: {fileID: 845188524954634821, guid: e32a97e5d54a306478473d2fda5fa2ec,

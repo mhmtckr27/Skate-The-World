@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
     private bool isNextLevelReady;
 
     public bool isSlideFinished;
-
+    public bool isFallFinished;
 
     private Transform objectTransfom;
 
@@ -128,6 +128,13 @@ public class Player : MonoBehaviour
             skateMove = SkateMoves.empty;
                 isSlideFinished = false;
         }
+
+        if (onGround() && isFallFinished)
+        {
+            skateMove = SkateMoves.empty;
+            isFallFinished = false;
+        }
+
         if (onGround() && animator.GetCurrentAnimatorStateInfo(0).IsName("Rail"))
         {
             neutral();
@@ -263,7 +270,7 @@ public class Player : MonoBehaviour
     {
         if (playerInput.isEnabled && playerInput.leftArrowPressed())
             skateMove = SkateMoves.red;
-        else if (playerInput.isEnabled && (playerInput.upArrowPressed() || playerInput.jumpPressed()))
+        else if (playerInput.isEnabled && playerInput.jumpPressed())
             skateMove = SkateMoves.green;
         else if (playerInput.isEnabled && playerInput.rightArrowPressed())
             skateMove = SkateMoves.yellow;
